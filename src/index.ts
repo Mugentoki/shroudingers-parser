@@ -872,11 +872,121 @@ export class ClausewitzDocument {
   getProperties(): Property[] {
     return this.root.properties;
   }
+
+  /**
+   * Convert the document back to Clausewitz script format
+   * @param options - Formatting options
+   */
+  stringify(options: StringifyOptions = {}): string {
+    return stringify(this.root, options);
+  }
 }
 
 // ============================================================================
-// Parse Function
+// Stringify Options
 // ============================================================================
+
+export interface StringifyOptions {
+  /** Indentation string (default: '\t') */
+  indent?: string;
+  /** Use spaces instead of tabs (overrides indent) */
+  spaces?: number;
+  /** Add newlines between top-level properties */
+  spaceBetweenTopLevel?: boolean;
+}
+
+// ============================================================================
+// Stringify Function
+// ============================================================================
+
+/**
+ * Convert an AST Document back to Clausewitz script format
+ * @param doc - The document to stringify
+ * @param options - Formatting options
+ * @returns The formatted Clausewitz script string
+ */
+export function stringify(doc: Document, options: StringifyOptions = {}): string {
+  const indent = options.spaces !== undefined 
+    ? ' '.repeat(options.spaces) 
+    : (options.indent ?? '\t');
+  
+  const spaceBetweenTopLevel = options.spaceBetweenTopLevel ?? false;
+
+  function stringifyValue(value: Value, depth: number): string {
+    // Primitive values
+    if (typeof value === 'string') {
+      // Check if it looks like an identifier (no spaces, no special chars)
+      if (/^[a-zA-Z_@][a-zA-Z0-9_:.\[\]@]*$/.test(value)) {
+        return value;
+      }
+      // Otherwise quote it
+      return `"${value.replace(/"/g, '\\"')}"`;
+    }
+    
+    if (typeof value === 'number') {
+      return String(value);
+    }
+    
+    if (typeof value === 'boolean') {
+      return value ? 'yes' : 'no';
+    }
+
+    // ValueArray
+    if (value.type === 'ValueArray') {
+      const values = value.values.map(v => stringifyValue(v, depth)).join(' ');
+      return `{ ${values} }`;
+    }
+
+    // Block
+    if (value.type === 'Block') {
+      if (value.properties.length === 0) {
+        return '{ }';
+      }
+
+      // Check if block can be inline (few short properties)
+      const canBeInline = value.properties.length <= 3 && 
+        value.properties.every(p => isPrimitiveValue(p.value));
+      
+      if (canBeInline) {
+        const props = value.properties
+          .map(p => `${p.key} ${p.operator} ${stringifyValue(p.value, depth)}`)
+          .join(' ');
+        return `{ ${props} }`;
+      }
+
+      // Multi-line block
+      const innerIndent = indent.repeat(depth + 1);
+      const closingIndent = indent.repeat(depth);
+      
+      const props = value.properties
+        .map(p => `${innerIndent}${p.key} ${p.operator} ${stringifyValue(p.value, depth + 1)}`)
+        .join('\n');
+      
+      return `{\n${props}\n${closingIndent}}`;
+    }
+
+    return String(value);
+  }
+
+  function isPrimitiveValue(value: Value): boolean {
+    return typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean';
+  }
+
+  const lines: string[] = [];
+  
+  for (let i = 0; i < doc.properties.length; i++) {
+    const prop = doc.properties[i];
+    const line = `${prop.key} ${prop.operator} ${stringifyValue(prop.value, 0)}`;
+    lines.push(line);
+    
+    // Add blank line between top-level properties if option is set
+    if (spaceBetweenTopLevel && i < doc.properties.length - 1) {
+      lines.push('');
+    }
+  }
+
+  return lines.join('\n');
+}
 
 /**
  * Parse a Clausewitz script string into an AST

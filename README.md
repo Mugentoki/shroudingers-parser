@@ -103,6 +103,54 @@ const resultNoComments = tokenizeWithoutComments(input);
 - **`ValueArray`** - Array of primitive values (e.g., `{ 5.5 6 6.5 }`)
 - **`PrimitiveValue`** - `string | number | boolean`
 
+### Stringify (Converting Back to Text)
+
+Convert a parsed document back to Clausewitz script format:
+
+```typescript
+import { parse, stringify, ClausewitzDocument } from 'shroudingers-parser';
+
+const input = `
+scenario = {
+  name = "My Galaxy"
+  priority = 0
+  default = yes
+}
+`;
+
+const result = parse(input);
+
+if (result.success) {
+  // Using the standalone function
+  const output = stringify(result.document);
+  console.log(output);
+  
+  // Or using ClausewitzDocument helper
+  const doc = new ClausewitzDocument(result.document);
+  doc.set('scenario.priority', 10);
+  console.log(doc.stringify());
+}
+```
+
+#### Stringify Options
+
+```typescript
+stringify(doc, {
+  indent: '\t',           // Indentation string (default: '\t')
+  spaces: 2,              // Use spaces instead of tabs (overrides indent)
+  spaceBetweenTopLevel: true  // Add blank lines between top-level properties
+});
+```
+
+#### Formatting Behavior
+
+- Valid identifiers are output without quotes
+- Strings with spaces or special characters are automatically quoted
+- Booleans are converted to `yes`/`no`
+- Small blocks (≤3 primitive properties) are kept inline: `{ x = 10 y = 20 }`
+- Larger blocks use multi-line format with indentation
+- Value arrays are always inline: `{ 1 2 3 4 5 }`
+
 ## Development
 
 ### Prerequisites

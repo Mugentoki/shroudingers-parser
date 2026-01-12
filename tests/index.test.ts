@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { tokenize, tokenizeWithoutComments, TokenType, parse, ClausewitzDocument, Block, ValueArray } from '../src/index';
+import { tokenize, tokenizeWithoutComments, TokenType, parse, ClausewitzDocument, Block, ValueArray, stringify } from '../src/index';
 
 describe('Tokenizer', () => {
   describe('tokenize', () => {
@@ -371,5 +371,152 @@ describe('ClausewitzDocument', () => {
     const block = doc.get('block') as Block;
     expect(block.properties).toHaveLength(2);
     expect(block.properties.every(p => p.key !== 'remove')).toBe(true);
+  });
+});
+
+describe('stringify', () => {
+  it('should stringify simple key-value pairs', () => {
+    const result = parse('name = "Test"');
+    expect(result.success).toBe(true);
+    
+    const output = stringify(result.document!);
+    // Valid identifiers are output without quotes
+    expect(output).toBe('name = Test');
+  });
+
+  it('should quote strings with spaces', () => {
+    const result = parse('name = "Test Value"');
+    expect(result.success).toBe(true);
+    
+    const output = stringify(result.document!);
+    expect(output).toBe('name = "Test Value"');
+  });
+
+  it('should stringify identifier values without quotes', () => {
+    const result = parse('initializer = dyson_sphere_init_01');
+    expect(result.success).toBe(true);
+    
+    const output = stringify(result.document!);
+    expect(output).toBe('initializer = dyson_sphere_init_01');
+  });
+
+  it('should stringify numbers', () => {
+    const result = parse('x = -75\ny = 1.5');
+    expect(result.success).toBe(true);
+    
+    const output = stringify(result.document!);
+    expect(output).toBe('x = -75\ny = 1.5');
+  });
+
+  it('should stringify booleans as yes/no', () => {
+    const result = parse('enabled = yes\ndisabled = no');
+    expect(result.success).toBe(true);
+    
+    const output = stringify(result.document!);
+    expect(output).toBe('enabled = yes\ndisabled = no');
+  });
+
+  it('should stringify value arrays inline', () => {
+    const result = parse('values = { 1 2 3 4 5 }');
+    expect(result.success).toBe(true);
+    
+    const output = stringify(result.document!);
+    expect(output).toBe('values = { 1 2 3 4 5 }');
+  });
+
+  it('should stringify small blocks inline', () => {
+    const result = parse('position = { x = 10 y = 20 }');
+    expect(result.success).toBe(true);
+    
+    const output = stringify(result.document!);
+    expect(output).toBe('position = { x = 10 y = 20 }');
+  });
+
+  it('should stringify large blocks with newlines', () => {
+    const result = parse(`
+      config = {
+        a = 1
+        b = 2
+        c = 3
+        d = 4
+      }
+    `);
+    expect(result.success).toBe(true);
+    
+    const output = stringify(result.document!);
+    expect(output).toContain('{\n');
+    expect(output).toContain('\ta = 1');
+  });
+
+  it('should use custom indentation', () => {
+    const result = parse(`
+      config = {
+        a = 1
+        b = 2
+        c = 3
+        d = 4
+      }
+    `);
+    expect(result.success).toBe(true);
+    
+    const output = stringify(result.document!, { spaces: 2 });
+    expect(output).toContain('  a = 1');
+  });
+
+  it('should stringify comparison operators', () => {
+    const result = parse('value < 10');
+    expect(result.success).toBe(true);
+    
+    const output = stringify(result.document!);
+    expect(output).toBe('value < 10');
+  });
+
+  it('should stringify duplicate keys', () => {
+    const result = parse(`
+      system = { id = "1" }
+      system = { id = "2" }
+    `);
+    expect(result.success).toBe(true);
+    
+    const output = stringify(result.document!);
+    expect(output).toContain('system = { id = "1" }');
+    expect(output).toContain('system = { id = "2" }');
+  });
+
+  it('should round-trip parse and stringify', () => {
+    const input = `scenario = {
+\tname = "Test Galaxy"
+\tpriority = 0
+\tdefault = yes
+\tposition = { x = 10 y = 20 }
+}`;
+    
+    const result = parse(input);
+    expect(result.success).toBe(true);
+    
+    const output = stringify(result.document!);
+    
+    // Parse the output again
+    const result2 = parse(output);
+    expect(result2.success).toBe(true);
+    
+    // The documents should be equivalent
+    const doc1 = new ClausewitzDocument(result.document!);
+    const doc2 = new ClausewitzDocument(result2.document!);
+    
+    expect(doc1.get('scenario.name')).toBe(doc2.get('scenario.name'));
+    expect(doc1.get('scenario.priority')).toBe(doc2.get('scenario.priority'));
+    expect(doc1.get('scenario.default')).toBe(doc2.get('scenario.default'));
+  });
+
+  it('should work via ClausewitzDocument.stringify()', () => {
+    const result = parse('name = "Test"');
+    expect(result.success).toBe(true);
+    
+    const doc = new ClausewitzDocument(result.document!);
+    const output = doc.stringify();
+    
+    // Valid identifiers are output without quotes
+    expect(output).toBe('name = Test');
   });
 });
