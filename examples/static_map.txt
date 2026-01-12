@@ -1,0 +1,236 @@
+static_galaxy_scenario = {
+	name = "Stargate: Novus Mundus"
+ 	priority = 0
+	default = yes
+ 	supports_shape = elliptical #more complicated shapes probably won't work with this, but it needs at least some parameters from the shape definition
+ 	num_empires = { min = 3 max = 3 }
+ 	num_empire_default = 3
+ 	fallen_empire_default = 2
+ 	fallen_empire_max = 2
+ 	marauder_empire_default = 1
+ 	marauder_empire_max = 1
+ 	advanced_empire_default = 1
+ 	colonizable_planet_odds = 1.0
+ 	primitive_odds = 1.0
+ 	crisis_strength = 0.75
+ 	extra_crisis_strength = { 5.5 6 6.5 7 7.5 8 8.5 9 9.5 10 11 12 13 14 15 17.5 20 22.5 25 30 35 40 45 50}
+ 	num_wormhole_pairs = { min = 0 max = 10 }
+ 	num_wormhole_pairs_default = 1
+ 	num_gateways = { min = 0 max = 10 }
+ 	num_gateways_default = 1
+ 	random_hyperlanes = no
+ 	core_radius = 0
+
+ 	coordinate_transform = { #Subsequent systems will have the coordinates entered for them altered by these numbers
+ 		x = {
+ 			add = 10
+ 			sub = 5
+ 		}
+ 		y = {
+ 			mul = 1.1
+ 		}
+ 		z = {
+ 			div = 1.1
+ 		}
+ 	}
+
+ 	system = { id = "15" name = "" position = { x = 7 y = 33 z = 4} initializer = dyson_sphere_init_01 }
+ 	system = { id = "46" name = "" position = { x = { min = 20 max = 30 } y = 30 }  }
+ 	system = { id = "49" name = "" position = { x = 98 y = -7 }  }
+ 	system = { id = "26" name = "" position = { x = 52 y = -75 }  }
+ 	system = { id = "6" name = "" position = { x = 13 y = -70 } spawn_design = my_design } # If system specifies spawn_design, it will ignore spawn_weight
+ 	system = { id = "9" name = "" position = { x = 8 y = -10 } initializer = shattered_ring_start spawn_weight = { base = 0 modifier = { add = 10 } } } #has_country_flag = my_country } } }
+ 	system = { id = "21" name = "" position = { x = 58 y = -9 }  }
+ 	system = {
+ 		id = "19"
+ 		name = ""
+ 		position = { x = 3 y = -92 }
+ 		initializer = random_empire_init_03
+ 		spawn_weight = { base = 1 }
+ 	}
+ 	system = { id = "2" name = "" position = { x = -5 y = 40 z = -5 }  }
+ 	system = { id = "12" name = "" position = { x = 44 y = -49 }  }
+ 	system = { id = "41" name = "" position = { x = 17 y = -41 }  }
+ 	system = { id = "37" name = "" position = { x = 42 y = -10 }  }
+ 	system = { id = "43" name = "" position = { x = 6 y = 49 }  }
+ 	system = { id = "28" name = "" position = { x = -44 y = -81 }  }
+ 	system = { id = "44" name = "" position = { x = 44 y = 73 }  }
+ 	system = { id = "31" name = "" position = { x = -9 y = -19 }  }
+ 	system = { id = "45" name = "" position = { x = -48 y = 19 } }
+ 	system = { id = "40" name = "" position = { x = 9 y = -99 }  }
+ 	system = { id = "25" name = "" position = { x = -53 y = 72 }  }
+ 	system = { id = "0" name = "" position = { x = 0 y = 0 z = 5}  }
+ 	system = { id = "35" name = "" position = { x = -23 y = -46 }  }
+ 	system = {
+ 		id = "47"
+ 		name = ""
+ 		position = { x = -50 y = -44 }
+ 		initializer = guardians_init_dragon
+ 	}
+ 	system = { id = "8" name = "" position = { x = -3 y = -93 }  }
+ 	system = { id = "24" name = "" position = { x = -35 y = 27 }  }
+ 	system = { id = "14" name = "" position = { x = 68 y = -50 }  }
+ 	system = { id = "32" name = "" position = { x = 26 y = -32 }  }
+ 	system = { id = "4" name = "" position = { x = -50 y = -71 }  }
+ 	system = { id = "36" name = "" position = { x = -82 y = 18 }  }
+ 	system = { id = "42" name = "" position = { x = -41 y = 91 }  }
+ 	system = { id = "33" name = "" position = { x = 77 y = 8 }  }
+ 	system = { id = "23" name = "" position = { x = -30 y = -69 }  }
+ 	system = { id = "20" name = "" position = { x = 82 y = 54 }  }
+ 	system = { id = "3" name = "" position = { x = -49 y = -7 }  }
+ 	system = { id = "22" name = "" position = { x = 51 y = 58 }  }
+ 	system = { id = "1" name = "" position = { x = -76 y = -20 }  }
+ 	system = { id = "38" name = "" position = { x = 15 y = 57 }  }
+ 	system = { id = "34" name = "" position = { x = 31 y = -72 }  }
+ 	system = { id = "11" name = "" position = { x = -6 y = -73 }  }
+ 	system = { id = "48" name = "" position = { x = -43 y = -23 }  }
+ 	system = { id = "30" name = "" position = { x = -51 y = -57 }  }
+ 	system = {
+ 		id = "10"
+ 		name = ""
+ 		position = { x = 72 y = -2 }
+ 		initializer = random_empire_init_01
+ 		spawn_weight = { base = 1 }
+ 	}
+ 	system = { id = "29" name = "" position = { x = 33 y = -89 }  }
+ 	system = { id = "18" name = "" position = { x = -57 y = -27 }  }
+ 	system = { id = "27" name = "" position = { x = -97 y = -9 }  }
+ 	system = { id = "5" name = "" position = { x = -41 y = 10 }  }
+ 	system = { id = "17" name = "" position = { x = -23 y = 17 }  }
+ 	system = { id = "39" name = "" position = { x = -70 y = 34 }  }
+ 	system = { id = "13" name = "" position = { x = 86 y = 40 }  }
+
+ 	system = {
+ 		id = "7"
+ 		name = ""
+ 		position = { x = -39 y = 53 }
+ 		initializer = random_empire_init_05
+ 		spawn_weight = { base = 1 }
+ 		effect = {
+ 			log = "Success system [This.GetName]"
+ 		}
+ 	}
+ 	system = { id = "16" name = "" position = { x = -75 y = -43 }  }
+ 	add_hyperlane = { from = "0" to = "9" }
+ 	add_hyperlane = { from = "0" to = "31" }
+ 	add_hyperlane = { from = "1" to = "18" }
+ 	add_hyperlane = { from = "1" to = "16" }
+ 	add_hyperlane = { from = "1" to = "27" }
+ 	add_hyperlane = { from = "2" to = "15" }
+ 	add_hyperlane = { from = "2" to = "43" }
+ 	add_hyperlane = { from = "3" to = "48" }
+ 	add_hyperlane = { from = "3" to = "5" }
+ 	add_hyperlane = { from = "3" to = "18" }
+ 	add_hyperlane = { from = "4" to = "28" }
+ 	add_hyperlane = { from = "4" to = "23" }
+ 	add_hyperlane = { from = "5" to = "45" }
+ 	add_hyperlane = { from = "5" to = "3" }
+ 	add_hyperlane = { from = "6" to = "34" }
+ 	add_hyperlane = { from = "6" to = "11" }
+ 	add_hyperlane = { from = "7" to = "24" }
+ 	add_hyperlane = { from = "7" to = "45" }
+ 	add_hyperlane = { from = "7" to = "2" }
+ 	add_hyperlane = { from = "7" to = "39" }
+ 	add_hyperlane = { from = "7" to = "17" }
+ 	add_hyperlane = { from = "7" to = "25" }
+ 	add_hyperlane = { from = "7" to = "25" }
+ 	add_hyperlane = { from = "7" to = "42" }
+ 	add_hyperlane = { from = "7" to = "43" }
+ 	add_hyperlane = { from = "8" to = "19" }
+ 	add_hyperlane = { from = "8" to = "40" }
+ 	add_hyperlane = { from = "8" to = "11" }
+ 	add_hyperlane = { from = "9" to = "0" }
+ 	add_hyperlane = { from = "9" to = "31" }
+ 	add_hyperlane = { from = "9" to = "32" }
+ 	add_hyperlane = { from = "10" to = "33" }
+ 	add_hyperlane = { from = "10" to = "21" }
+ 	add_hyperlane = { from = "11" to = "6" }
+ 	add_hyperlane = { from = "11" to = "8" }
+ 	add_hyperlane = { from = "11" to = "19" }
+ 	add_hyperlane = { from = "12" to = "14" }
+ 	add_hyperlane = { from = "12" to = "32" }
+ 	add_hyperlane = { from = "12" to = "34" }
+ 	add_hyperlane = { from = "13" to = "33" }
+ 	add_hyperlane = { from = "13" to = "10" }
+ 	add_hyperlane = { from = "13" to = "49" }
+ 	add_hyperlane = { from = "13" to = "20" }
+ 	add_hyperlane = { from = "13" to = "20" }
+ 	add_hyperlane = { from = "14" to = "12" }
+ 	add_hyperlane = { from = "15" to = "2" }
+ 	add_hyperlane = { from = "15" to = "43" }
+ 	add_hyperlane = { from = "15" to = "38" }
+ 	add_hyperlane = { from = "16" to = "1" }
+ 	add_hyperlane = { from = "17" to = "0" }
+ 	add_hyperlane = { from = "17" to = "24" }
+ 	add_hyperlane = { from = "17" to = "5" }
+ 	add_hyperlane = { from = "17" to = "2" }
+ 	add_hyperlane = { from = "19" to = "8" }
+ 	add_hyperlane = { from = "19" to = "40" }
+ 	add_hyperlane = { from = "19" to = "11" }
+ 	add_hyperlane = { from = "21" to = "10" }
+ 	add_hyperlane = { from = "21" to = "37" }
+ 	add_hyperlane = { from = "21" to = "33" }
+ 	add_hyperlane = { from = "22" to = "38" }
+ 	add_hyperlane = { from = "22" to = "13" }
+ 	add_hyperlane = { from = "22" to = "43" }
+ 	add_hyperlane = { from = "22" to = "15" }
+ 	add_hyperlane = { from = "22" to = "46" }
+ 	add_hyperlane = { from = "22" to = "46" }
+ 	add_hyperlane = { from = "22" to = "44" }
+ 	add_hyperlane = { from = "23" to = "28" }
+ 	add_hyperlane = { from = "23" to = "4" }
+ 	add_hyperlane = { from = "23" to = "30" }
+ 	add_hyperlane = { from = "23" to = "35" }
+ 	add_hyperlane = { from = "24" to = "17" }
+ 	add_hyperlane = { from = "24" to = "45" }
+ 	add_hyperlane = { from = "24" to = "5" }
+ 	add_hyperlane = { from = "25" to = "42" }
+ 	add_hyperlane = { from = "28" to = "4" }
+ 	add_hyperlane = { from = "28" to = "23" }
+ 	add_hyperlane = { from = "29" to = "34" }
+ 	add_hyperlane = { from = "29" to = "26" }
+ 	add_hyperlane = { from = "30" to = "47" }
+ 	add_hyperlane = { from = "30" to = "4" }
+ 	add_hyperlane = { from = "31" to = "9" }
+ 	add_hyperlane = { from = "31" to = "0" }
+ 	add_hyperlane = { from = "32" to = "41" }
+ 	add_hyperlane = { from = "32" to = "12" }
+ 	add_hyperlane = { from = "32" to = "37" }
+ 	add_hyperlane = { from = "32" to = "9" }
+ 	add_hyperlane = { from = "33" to = "10" }
+ 	add_hyperlane = { from = "33" to = "21" }
+ 	add_hyperlane = { from = "33" to = "49" }
+ 	add_hyperlane = { from = "34" to = "29" }
+ 	add_hyperlane = { from = "34" to = "6" }
+ 	add_hyperlane = { from = "34" to = "26" }
+ 	add_hyperlane = { from = "34" to = "12" }
+ 	add_hyperlane = { from = "35" to = "23" }
+ 	add_hyperlane = { from = "35" to = "48" }
+ 	add_hyperlane = { from = "36" to = "39" }
+ 	add_hyperlane = { from = "37" to = "21" }
+ 	add_hyperlane = { from = "37" to = "32" }
+ 	add_hyperlane = { from = "38" to = "43" }
+ 	add_hyperlane = { from = "38" to = "15" }
+ 	add_hyperlane = { from = "39" to = "36" }
+ 	add_hyperlane = { from = "39" to = "45" }
+ 	add_hyperlane = { from = "40" to = "19" }
+ 	add_hyperlane = { from = "40" to = "8" }
+ 	add_hyperlane = { from = "40" to = "29" }
+ 	add_hyperlane = { from = "41" to = "32" }
+ 	add_hyperlane = { from = "42" to = "25" }
+ 	add_hyperlane = { from = "43" to = "38" }
+ 	add_hyperlane = { from = "43" to = "15" }
+ 	add_hyperlane = { from = "45" to = "5" }
+ 	add_hyperlane = { from = "45" to = "24" }
+ 	add_hyperlane = { from = "45" to = "39" }
+ 	add_hyperlane = { from = "47" to = "30" }
+ 	add_hyperlane = { from = "47" to = "18" }
+ 	add_hyperlane = { from = "47" to = "48" }
+ 	add_hyperlane = { from = "48" to = "18" }
+ 	add_hyperlane = { from = "48" to = "3" }
+ 	add_hyperlane = { from = "48" to = "47" }
+ 	add_hyperlane = { from = "48" to = "35" }
+ 	add_hyperlane = { from = "49" to = "33" }
+ 	prevent_hyperlane = { from = "47" to = "8" }
+ 	nebula = { name = "My Name" position = { x = 10 y = 30 z = 1 } radius = 20 }
+}
