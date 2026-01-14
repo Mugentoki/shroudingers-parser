@@ -900,12 +900,20 @@ export interface StringifyOptions {
 // ============================================================================
 
 /**
- * Convert an AST Document back to Clausewitz script format
- * @param doc - The document to stringify
+ * Convert an AST Document or ClausewitzDocument back to Clausewitz script format
+ * @param doc - The document to stringify (Document or ClausewitzDocument)
  * @param options - Formatting options
  * @returns The formatted Clausewitz script string
  */
-export function stringify(doc: Document, options: StringifyOptions = {}): string {
+export function stringify(doc: Document | ClausewitzDocument, options: StringifyOptions = {}): string {
+  // Handle ClausewitzDocument by extracting the raw document
+  const rawDoc: Document = doc instanceof ClausewitzDocument ? doc.getDocument() : doc;
+  
+  // Validate the document
+  if (!rawDoc || !rawDoc.properties) {
+    throw new Error('Invalid document: expected a Document with properties array');
+  }
+
   const indent = options.spaces !== undefined 
     ? ' '.repeat(options.spaces) 
     : (options.indent ?? '\t');
@@ -974,13 +982,13 @@ export function stringify(doc: Document, options: StringifyOptions = {}): string
 
   const lines: string[] = [];
   
-  for (let i = 0; i < doc.properties.length; i++) {
-    const prop = doc.properties[i];
+  for (let i = 0; i < rawDoc.properties.length; i++) {
+    const prop = rawDoc.properties[i];
     const line = `${prop.key} ${prop.operator} ${stringifyValue(prop.value, 0)}`;
     lines.push(line);
     
     // Add blank line between top-level properties if option is set
-    if (spaceBetweenTopLevel && i < doc.properties.length - 1) {
+    if (spaceBetweenTopLevel && i < rawDoc.properties.length - 1) {
       lines.push('');
     }
   }
