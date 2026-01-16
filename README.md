@@ -2,7 +2,7 @@
 
 A TypeScript parser for Clausewitz scripting files used by Paradox Interactive games (Stellaris, EU4, CK3, HOI4). Parse, manipulate, and serialize game script files with full support for nested blocks, duplicate keys, comparison operators, and value arrays.
 
-> **Note:** This library has only been tested with map scripts so far. Other script types may work but are not yet validated.
+> **Note:** This library has only been tested with map scripts so far. Other script types are most probably not working right now.
 
 ## Installation
 
