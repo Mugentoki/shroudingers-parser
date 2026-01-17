@@ -146,6 +146,27 @@ system = {
       expect(result.success).toBe(true);
       expect(result.tokens![0]).toMatchObject({ type: TokenType.Identifier, value: '@my_variable' });
     });
+
+    it('should tokenize identifiers starting with numbers (like 8472_1)', () => {
+      const result = tokenize('initializer = 8472_1');
+      expect(result.success).toBe(true);
+      expect(result.tokens![2]).toMatchObject({ type: TokenType.Identifier, value: '8472_1' });
+    });
+
+    it('should handle system with numeric underscore initializer', () => {
+      const input = 'system = { id = "363" name = "Tarok" position = { x = { min = -230 max = -202 } y = { min = -469 max = -455 } } initializer = 8472_1 }';
+      const result = tokenize(input);
+      expect(result.success).toBe(true);
+      
+      // Find the initializer token and the value after it
+      const tokens = result.tokens!;
+      const initializerIndex = tokens.findIndex(t => t.value === 'initializer');
+      expect(initializerIndex).toBeGreaterThan(-1);
+      
+      // The next token should be '=', and the one after that should be '8472_1'
+      expect(tokens[initializerIndex + 1]).toMatchObject({ type: TokenType.Equals });
+      expect(tokens[initializerIndex + 2]).toMatchObject({ type: TokenType.Identifier, value: '8472_1' });
+    });
   });
 
   describe('tokenizeWithoutComments', () => {

@@ -149,8 +149,13 @@ export class Tokenizer {
       return this.scanString(startLine, startColumn);
     }
 
-    // Numbers (including negative)
+    // Numbers (including negative) - but check if it's actually an identifier starting with digits
     if (this.isDigit(char) || (char === '-' && this.isDigit(this.peekNext()))) {
+      // Look ahead to see if this is a number followed by identifier characters
+      // If so, treat the whole thing as an identifier (e.g., "8472_1")
+      if (this.isNumberFollowedByIdentifier()) {
+        return this.scanIdentifier(startLine, startColumn);
+      }
       return this.scanNumber(startLine, startColumn);
     }
 
@@ -319,11 +324,46 @@ export class Tokenizer {
   }
 
   private isIdentifierStart(char: string): boolean {
-    return this.isAlpha(char) || char === '_' || char === '@';
+    return this.isAlpha(char) || char === '_' || char === '@' || this.isDigit(char);
   }
 
   private isIdentifierChar(char: string): boolean {
     return this.isAlpha(char) || this.isDigit(char) || char === '_' || char === ':' || char === '.' || char === '[' || char === ']' || char === '@';
+  }
+
+  /**
+   * Check if the current position starts a number that's followed by identifier characters
+   * This handles cases like "8472_1" which should be treated as an identifier, not a number
+   */
+  private isNumberFollowedByIdentifier(): boolean {
+    let pos = this.position;
+    
+    // Skip negative sign if present
+    if (pos < this.input.length && this.input[pos] === '-') {
+      pos++;
+    }
+    
+    // Skip digits
+    while (pos < this.input.length && this.isDigit(this.input[pos])) {
+      pos++;
+    }
+    
+    // Skip decimal point and more digits if present
+    if (pos < this.input.length && this.input[pos] === '.' && pos + 1 < this.input.length && this.isDigit(this.input[pos + 1])) {
+      pos++;
+      while (pos < this.input.length && this.isDigit(this.input[pos])) {
+        pos++;
+      }
+    }
+    
+    // Check if the next character is an identifier character (but not a digit or '.')
+    if (pos < this.input.length) {
+      const nextChar = this.input[pos];
+      // If we hit an underscore, letter, or other identifier char, it's an identifier
+      return this.isAlpha(nextChar) || nextChar === '_' || nextChar === ':' || nextChar === '@';
+    }
+    
+    return false;
   }
 }
 
