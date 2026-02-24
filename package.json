@@ -1,10 +1,10 @@
 {
   "name": "shroudingers-parser",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A parser for clausewitz scripting files",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-    "repository": {
+  "repository": {
     "type": "git",
     "url": "https://github.com/Mugentoki/shroudingers-parser.git"
   },
