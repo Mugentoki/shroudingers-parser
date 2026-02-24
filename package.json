@@ -4,6 +4,11 @@
   "description": "A parser for clausewitz scripting files",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+    "repository": {
+    "type": "git",
+    "url": "https://github.com/Mugentoki/shroudingers-parser.git"
+  },
+  "homepage": "https://github.com/Mugentoki/shroudingers-parser",
   "scripts": {
     "build": "tsc",
     "test": "vitest run",
